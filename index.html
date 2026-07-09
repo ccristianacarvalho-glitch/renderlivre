@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RenderLivre - renders AI gratuitos</title>
+    <link rel="stylesheet" href="styles.css?v=2">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#studio" aria-label="RenderLivre">
+        <span class="brand-mark">RL</span>
+        <span>RenderLivre</span>
+      </a>
+      <nav aria-label="Principal">
+        <a href="#studio">Studio</a>
+        <a href="#tools">Ferramentas</a>
+        <a href="#gallery">Galeria</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="ghost-button" href="#studio">Comecar gratis</a>
+    </header>
+
+    <main>
+      <section class="studio" id="studio">
+        <aside class="panel controls" aria-label="Controlos de render">
+          <div class="panel-head">
+            <p class="eyebrow">Sem login, sem creditos</p>
+            <h1>Render AI gratuito para arquitetura e interiores</h1>
+            <p>Carrega um sketch, foto, CAD em imagem ou render antigo. Ajusta estilo, luz, angulo, materiais e descarrega o resultado.</p>
+          </div>
+
+          <label class="upload-zone" for="upload">
+            <input id="upload" type="file" accept="image/png,image/jpeg,image/webp,image/gif,.pdf">
+            <span class="upload-icon">+</span>
+            <strong>Carregar imagem, sketch ou PDF</strong>
+            <small id="uploadInfo">Formatos: JPG, PNG, WebP, GIF ou PDF.</small>
+          </label>
+
+          <div class="auth-box">
+            <div>
+              <strong id="authTitle">Entrar com Google</strong>
+              <small id="authStatus">Obrigatorio para gerar renders reais.</small>
+            </div>
+            <button id="loginGoogle" class="secondary-button" type="button">Entrar</button>
+            <button id="logoutGoogle" class="secondary-button hidden" type="button">Sair</button>
+          </div>
+
+          <div class="field">
+            <label for="mode">Ferramenta</label>
+            <select id="mode">
+              <option value="render">Renderizar sketch/CAD</option>
+              <option value="edit">Editar materiais</option>
+              <option value="enhance">Melhorar render</option>
+              <option value="staging">Staging virtual</option>
+              <option value="photo">Editar foto</option>
+              <option value="video">Criar walkthrough</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="style">Estilo arquitetonico</label>
+            <select id="style">
+              <option>Moderno</option>
+              <option>Contemporaneo</option>
+              <option>Nordico</option>
+              <option>Japandi</option>
+              <option>Brutalista</option>
+              <option>Mediterranico</option>
+              <option>New Urbanism</option>
+              <option>Luxo minimalista</option>
+            </select>
+          </div>
+
+          <div class="segmented" aria-label="Fator de escala">
+            <button class="active" data-scale="2">2x</button>
+            <button data-scale="4">4x</button>
+            <button data-scale="10">10x</button>
+          </div>
+
+          <div class="field">
+            <label for="prompt">Prompt</label>
+            <textarea id="prompt" rows="4" placeholder="ex: fachada moderna, pedra clara, vidro, luz de fim de tarde"></textarea>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="angle">Angulo</label>
+              <select id="angle">
+                <option>Eye level</option>
+                <option>Aereo</option>
+                <option>Top view</option>
+                <option>Wide shot</option>
+                <option>Elevacao</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="scene">Cena</label>
+              <select id="scene">
+                <option>Exterior</option>
+                <option>Interior</option>
+                <option>Paisagismo</option>
+                <option>Planta 3D</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="chips" aria-label="Iluminacao">
+            <button class="chip active" data-light="Sunrise">Nascer do sol</button>
+            <button class="chip" data-light="Noon">Meio-dia</button>
+            <button class="chip" data-light="Night">Noite</button>
+          </div>
+
+          <div class="field">
+            <label for="material">Edicao localizada</label>
+            <input id="material" type="text" placeholder="ex: trocar garagem para betao aparente">
+          </div>
+
+          <div class="tool-row">
+            <button id="drawRegion" class="secondary-button" type="button">Desenhar regiao</button>
+            <button id="addMarkup" class="secondary-button" type="button">Adicionar ponto</button>
+            <button id="clearMarks" class="secondary-button" type="button">Limpar</button>
+          </div>
+
+          <button id="generate" class="primary-button" type="button">Gerar render AI</button>
+          <button id="download" class="download-button" type="button">Descarregar PNG</button>
+        </aside>
+
+        <section class="workspace" aria-label="Area de render">
+          <div class="canvas-shell">
+            <canvas id="preview" width="1280" height="900" aria-label="Pre-visualizacao do render"></canvas>
+            <div id="spinner" class="spinner hidden">A gerar...</div>
+          </div>
+          <div class="status-strip">
+            <span id="status">Pronto para renderizar.</span>
+            <span id="meta">RenderLivre local</span>
+          </div>
+        </section>
+      </section>
+
+      <section class="tool-grid" id="tools">
+        <article>
+          <h2>Render Tool</h2>
+          <p>Converte sketches, modelos, elevacoes e imagens CAD em renders fotorealistas simulados.</p>
+        </article>
+        <article>
+          <h2>Edit Tool</h2>
+          <p>Marca pontos ou regioes para trocar pedra, madeira, vidro, betao, cor e textura.</p>
+        </article>
+        <article>
+          <h2>Enhance</h2>
+          <p>Aplica nitidez, reducao de ruido, contraste e upscale visual antes do download.</p>
+        </article>
+        <article>
+          <h2>Virtual Staging</h2>
+          <p>Adiciona mobiliario estilizado a espacos vazios para apresentacoes e imobiliario.</p>
+        </article>
+        <article>
+          <h2>Photo Edit</h2>
+          <p>Recolore superficies, altera ambiente e remove detalhes com uma instrucao simples.</p>
+        </article>
+        <article>
+          <h2>Video</h2>
+          <p>Cria uma sequencia de frames de walkthrough para simular movimento de camara.</p>
+        </article>
+      </section>
+
+      <section class="gallery" id="gallery">
+        <div>
+          <p class="eyebrow">Exemplos incluidos</p>
+          <h2>Estilos prontos a experimentar</h2>
+        </div>
+        <div class="gallery-grid">
+          <button data-preset="Contemporaneo">Contemporaneo</button>
+          <button data-preset="Nordico">Nordico</button>
+          <button data-preset="New Urbanism">New Urbanism</button>
+          <button data-preset="Brutalista">Brutalista</button>
+          <button data-preset="Mediterranico">Mediterranico</button>
+          <button data-preset="Luxo minimalista">Luxo minimalista</button>
+        </div>
+      </section>
+
+      <section class="faq" id="faq">
+        <h2>Perguntas frequentes</h2>
+        <details open>
+          <summary>Os renders sao mesmo gratuitos?</summary>
+          <p>Sim. Esta versao corre localmente no browser, sem conta, sem planos e sem creditos.</p>
+        </details>
+        <details>
+          <summary>Isto usa a API do Rendershop?</summary>
+          <p>Nao. E uma alternativa independente inspirada no fluxo de funcionalidades, com geracao visual local.</p>
+        </details>
+        <details>
+          <summary>Posso usar comercialmente?</summary>
+          <p>Os ficheiros que descarregas sao gerados no teu browser. Confirma apenas os direitos das imagens que carregares.</p>
+        </details>
+      </section>
+    </main>
+
+    <script src="firebase-config.js?v=3"></script>
+    <script type="module" src="auth.js?v=3"></script>
+    <script type="module" src="app.js?v=3"></script>
+  </body>
+</html>
